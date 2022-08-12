@@ -291,6 +291,15 @@ export default function PrimarySearchAppBar(props) {
                                 Transfer History
                               </MenuItem>
                             </Link>
+                            <Link
+                              to="/CrossChainTransfer"
+                              className="Nav"
+                              style={{ textDecoration: "none", color: "white" }}
+                            >
+                              <MenuItem onClick={handleClose}>
+                                CrossChain Transfer
+                              </MenuItem>
+                            </Link>
                             <MenuItem onClick={handleClose}>Logout</MenuItem>
                           </MenuList>
                         </ClickAwayListener>

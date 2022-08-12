@@ -11,6 +11,7 @@ import MintForm from "./Components/MintForm";
 import OwnNfts from "./Components/OwnNfts";
 import Header from "./Components/Header";
 import Transfers from "./Components/Transfers";
+import CrossChainTransfer from "./Components/CrossChainTransfer";
 //abi's
 
 import NFT from "./config/contracts/NFT.json";
@@ -20,11 +21,15 @@ import ContractAddress from "./config/contracts/map.json";
 import { ethers } from "ethers";
 import axios from "axios";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import { create } from "ipfs-http-client";
+import { Buffer } from "buffer";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import theme from "./Components/theme/theme";
 /* const Web3Eth = require("web3-eth"); */
 // const {utils, BigNumber} = require('ethers');
+const ipfsClient = require("ipfs-http-client");
 
 function App() {
   //contract addresses
@@ -366,7 +371,37 @@ function App() {
   };
 
   //client used to host and upload data, endpoint infura
-  const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+
+  const projectId = process.env.REACT_APP_PORJECT_ID; // <---------- your Infura Project ID
+
+  const projectSecret = process.env.REACT_APP_PORJECT_SECRET; // <---------- your Infura Secret
+  // (for security concerns, consider saving these values in .env files)
+  const ipfsPostUrl =
+    /* " https://ipfs.infura.io:5001/api/v0"; */ " https://biconomynft.infura-ipfs.io";
+  /* const auth =
+    "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+
+  const client = ipfsClient.create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https" // url: ipfsPostUrl, ,
+    headers: {
+      authorization: auth,
+    },
+  }); */
+  const projectIdAndSecret = `${projectId}:${projectSecret}`;
+
+  const client = create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: `Basic ${Buffer.from(projectIdAndSecret).toString(
+        "base64"
+      )}`,
+    },
+  });
+  /* const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0"); */
 
   //keeping track of URL inserted as image for NFT metadata
   const [fileURL, setFileURL] = useState(null);
@@ -384,9 +419,11 @@ function App() {
                     progress: (prog) => console.log(`received ${prog}`)
                 }*/
       );
+
       //added is an object containing the path(hash), CID, and the size of the file
       //console.log(added)
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      console.log(url);
       setFileURL(url);
       // console.log(url)
     } catch (error) {
@@ -573,6 +610,11 @@ function App() {
                 infuraProvider={infuraProvider}
               />
             }
+          />
+          <Route
+            exact
+            path="/CrossChainTransfer"
+            element={<CrossChainTransfer />}
           />
         </Routes>
         {/*      <Button onClick={(e) => web3Call()}>Web3</Button> */}

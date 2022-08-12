@@ -3,12 +3,10 @@
 The NFT Marketplace is currently running and fully functional on Kovan at
 
 1. NFT Market:
-   0x19134c3b5B74395db11f334AF0aa903D80Ce5a61
 
 2. NFT:
-   0x0594f7f0955685F879CAeaacAAA9662291eF2e29
 
-The Website is online and running at [Website](https://superb-gnome-96c307.netlify.app)
+The Website is online and running at [Website]()
 
 ## Approach
 
@@ -26,18 +24,18 @@ This DApp allows you mint, buy and sell NFT's from the "Ape Family" contract.
 - mint, transfer and set TokenURI with NFT contract
 
 ## Video Demo
+
 https://www.youtube.com/watch?v=E7kEiSiET5o
 
-
-
-
 ## Covalent API
+
 Covalent was used to generate: [this whole section](https://github.com/Stefan1612/Covalent-NFT-Marketplace/blob/master/src/Components/Transfers.js)
 
 The actual API call
 https://github.com/Stefan1612/Covalent-NFT-Marketplace/blob/5aa24e0f444a21256bf8e687a885b9cf8b9fb640/src/Components/Transfers.js#L30-L34
 
 ## License
+
 This project is released under a GPLv3 compatible license
 
 ## Stack
