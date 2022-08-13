@@ -20,16 +20,15 @@ import ContractAddress from "./config/contracts/map.json";
 //others
 import { ethers } from "ethers";
 import axios from "axios";
-import { create as ipfsHttpClient } from "ipfs-http-client";
+/* import { create as ipfsHttpClient } from "ipfs-http-client"; */
 import { create } from "ipfs-http-client";
 import { Buffer } from "buffer";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import theme from "./Components/theme/theme";
-/* const Web3Eth = require("web3-eth"); */
+
 // const {utils, BigNumber} = require('ethers');
-const ipfsClient = require("ipfs-http-client");
 
 function App() {
   //contract addresses
@@ -376,7 +375,7 @@ function App() {
 
   const projectSecret = process.env.REACT_APP_PORJECT_SECRET; // <---------- your Infura Secret
 
-  const ipfsPostUrl = "https://biconomynft.infura-ipfs.io/ipfs/";
+  /* const ipfsPostUrl = "https://biconomynft.infura-ipfs.io/ipfs/"; */
 
   const projectIdAndSecret = `${projectId}:${projectSecret}`;
 
