@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Grid,
-  Container,
-  Input,
-} from "@mui/material";
+import { Typography, Box, Button, Container } from "@mui/material";
 import Footer from "./Footer";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
