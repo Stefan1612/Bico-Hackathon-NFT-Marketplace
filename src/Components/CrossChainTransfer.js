@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -10,7 +10,38 @@ import {
 } from "@mui/material";
 import Footer from "./Footer";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+
+/// Biconomy
+
+import * as HyphenWidget from "@biconomy/hyphen-widget";
+import "@biconomy/hyphen-widget/dist/index.css";
+
 const CrossChainTransfer = () => {
+  const [hyphenWidget, setHyphenWidget] = useState();
+
+  useEffect(() => {
+    const widget = HyphenWidget.default.init(
+      document.getElementById("widget"),
+      {
+        tag: "expecto-patronum",
+        showWidget: true,
+        showCloseButton: true,
+      }
+    );
+
+    if (widget) {
+      setHyphenWidget(widget);
+    }
+  }, []);
+
+  function handleOpen() {
+    hyphenWidget.open();
+  }
+
+  function handleClose() {
+    hyphenWidget.close();
+  }
+
   return (
     <Box
       id="background"
@@ -51,7 +82,27 @@ const CrossChainTransfer = () => {
               style={{ marginTop: "6vh" }}
             >
               <Container>
-                <Box></Box>
+                <Box>
+                  {" "}
+                  <div class="widget-container">
+                    <div id="widget"></div>
+                  </div>
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "white" }}
+                    onClick={handleOpen}
+                  >
+                    Open Widget
+                  </Button>
+                  &nbsp; &nbsp;
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "white" }}
+                    onClick={handleClose}
+                  >
+                    Close Widget
+                  </Button>
+                </Box>
               </Container>
             </div>
           </Box>

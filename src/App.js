@@ -375,20 +375,9 @@ function App() {
   const projectId = process.env.REACT_APP_PORJECT_ID; // <---------- your Infura Project ID
 
   const projectSecret = process.env.REACT_APP_PORJECT_SECRET; // <---------- your Infura Secret
-  // (for security concerns, consider saving these values in .env files)
-  const ipfsPostUrl =
-    /* " https://ipfs.infura.io:5001/api/v0"; */ " https://biconomynft.infura-ipfs.io";
-  /* const auth =
-    "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
 
-  const client = ipfsClient.create({
-    host: "ipfs.infura.io",
-    port: 5001,
-    protocol: "https" // url: ipfsPostUrl, ,
-    headers: {
-      authorization: auth,
-    },
-  }); */
+  const ipfsPostUrl = "https://biconomynft.infura-ipfs.io/ipfs/";
+
   const projectIdAndSecret = `${projectId}:${projectSecret}`;
 
   const client = create({
@@ -401,7 +390,6 @@ function App() {
       )}`,
     },
   });
-  /* const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0"); */
 
   //keeping track of URL inserted as image for NFT metadata
   const [fileURL, setFileURL] = useState(null);
@@ -422,7 +410,7 @@ function App() {
 
       //added is an object containing the path(hash), CID, and the size of the file
       //console.log(added)
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://biconomynft.infura-ipfs.io/ipfs/${added.path}`;
       console.log(url);
       setFileURL(url);
       // console.log(url)
@@ -445,7 +433,7 @@ function App() {
 
     try {
       const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://biconomynft.infura-ipfs.io/ipfs/${added.path}`;
       //run a function that creates Sale and passes in the URL
       mintNFT(url);
     } catch (error) {
