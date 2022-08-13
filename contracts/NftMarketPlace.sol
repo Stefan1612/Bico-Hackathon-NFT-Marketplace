@@ -10,6 +10,11 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 /// @dev security against transactions with multiple requests
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+/// @dev Biconomy gasless transactions
+import "./ERC2771Recipient.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+
+
 // LIBRARIES ------------------------------------------------------------------------------------
 /// @notice Counter Library to keep track of TokenID
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -30,11 +35,25 @@ error NftMarketPlace__CallerIsOwnerOfToken(address caller, uint tokenId);
 /// @title NFT Marketplace 
 /// @author Stefan Lehmann/Stefan1612/SimpleBlock
 /// @notice Contract used to allow trading, selling, creating Market Items (NFT)
-/// @dev 
-contract NftMarketPlace is ReentrancyGuard{
+contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
+
+
+    /// BICONOMY 
+
+    string public override versionRecipient = "v0.0.1";
+
+    function _msgSender() internal override ( ERC2771Recipient) view returns (address) {
+        return ERC2771Recipient._msgSender();
+    }
+
+    function _msgData() internal override ( ERC2771Recipient) view returns (bytes calldata) {
+        return ERC2771Recipient._msgData();
+    }
+
+
 
     // Type declarations, State Variables ------------------------------------------------------------------------------------
-    /// @notice enabling counter
+
     /// @dev making use of counter library for Counters.Counter
     using Counters for Counters.Counter;
 
@@ -47,8 +66,6 @@ contract NftMarketPlace is ReentrancyGuard{
     /// @notice useless test Constant
     uint private constant TEST = 12;
 
-    /* // In case someone accidentally sends ether directly to this contract
-    mapping(address  => uint256) private addressToBalance; */
 
     /// @notice Market Token that gets minted every time someone mints on our market
     /// @dev struct representing our MarketToken and its values at any given time
@@ -112,34 +129,18 @@ contract NftMarketPlace is ReentrancyGuard{
     );
 
     // MODIFIERS ------------------------------------------------------------------------------------
-    
-   /*  // In Case modifiers and requires get more gas efficient in the future
-    /// @notice checking if correct listing price has been paid
-    /// @dev modifer to get the exact listing price
-    modifier paidListingPrice() {
-        require(msg.value == LISTINGPRICE, "You need to pay the LISTINGPRICE");
-        _;
-    } */
+
 
 
 
     // FUNCTIONS ------------------------------------------------------------------------------------
     /// @notice setting owner to contract deployer
-    constructor() {
+    constructor(address forwarder) {
         i_owner = payable(msg.sender);
+        _setTrustedForwarder(forwarder);
     }
 
-  /*   /// @dev In case somebody mistakenly sends ether directly to this contract
-    fallback() payable external {
-        addressToBalance[msg.sender] += msg.value;
-        emit balanceDirectlyToContract(msg.sender, msg.value, block.timestamp);
-    }
-    /// @dev getting their ether back if they triggered fallback for whatever reason
-    function withdrawPersonalContractProfits() external nonReentrant{
-        (bool sent, ) = payable(msg.sender).call{value: addressToBalance[msg.sender]}("");
-        require(sent);
-        addressToBalance[msg.sender] = 0;
-    } */
+
     /// @notice A way for the contract owner to withdraw his profits
     function withdrawContractsProfits() external {
         if(msg.sender != i_owner){
@@ -199,18 +200,7 @@ contract NftMarketPlace is ReentrancyGuard{
         if(idToMarketToken[_tokenId].owner != msg.sender){
             revert NftMarketPlace__NotOwnerOfToken(msg.sender, _tokenId);
         }
-        /* /// @dev sell price must be > 0 Wei
-        require(sellPrice > 0, "Price must be atleast one wei");
-        /// @dev token can't be on sale already
-        require(
-            idToMarketToken[_tokenId].onSale == false,
-            "The token is already on sale"
-        );
-        /// @dev seller must be owner
-        require(
-            idToMarketToken[_tokenId].owner == msg.sender,
-            "only owner of token can call this method"
-        ); */
+      
         /// @dev transferring the NFT created in given contract address from current caller to this marketplace
         IERC721(_nftContractAddress).transferFrom(
             msg.sender,
@@ -244,20 +234,7 @@ contract NftMarketPlace is ReentrancyGuard{
         if(msg.sender == idToMarketToken[_tokenId].owner){
             revert NftMarketPlace__CallerIsOwnerOfToken(msg.sender, _tokenId);
         }
-        /* /// @dev require existing ID
-        require(_tokenId > 0, "TokenId must be over 0");
-        require(
-            msg.value == idToMarketToken[_tokenId].price,
-            "Message value must be equal to sellPrice"
-        );
-        require(
-            idToMarketToken[_tokenId].onSale == true,
-            "NFT must be up for sale"
-        );
-        require(
-            msg.sender != idToMarketToken[_tokenId].owner,
-            "You cannot buy from yourself (atleast not with the same address)"
-        ); */
+     
 
        
         /// @dev transferring NFT created in given address from this marketplace to the msg.sender (buyer)
@@ -303,27 +280,7 @@ contract NftMarketPlace is ReentrancyGuard{
         return res;
     }
 
-    /*function deleteNFT(uint256 _tokenId) external returns (bool) {
-        require(
-            msg.sender == idToMarketToken[_tokenId].owner,
-            "only the owner of the nft can delete it"
-        );
-        uint256 currentLastTokenId = s_tokenIds.current();
-        for (uint256 i = 1; i <= currentLastTokenId; i++) {
-            if (idToMarketToken[i].tokenId == _tokenId) {
-                idToMarketToken[i] = MarketToken(
-                    address(0),
-                    0,
-                    0,
-                    false,
-                    payable(address(0)),
-                    payable(address(0)),
-                    address(0)
-                );
-            }
-        }
-        return true;
-    }*/
+ 
     /// @notice getting all tokens which currently belong to msg.sender
     /// @return array of Market Tokens which currently belong to msg.sender
     function fetchAllMyTokens() external view returns (MarketToken[] memory) {
