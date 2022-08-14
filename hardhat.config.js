@@ -12,6 +12,7 @@ const {
   COINMARKETCAP_API_KEY,
   APP_RINKEBY_ENDPOINT,
   APP_KOVAN_ENDPOINT,
+  APP_GOERLI_ENDPOINT,
 } = process.env;
 // eslint-disable-next-line
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -20,7 +21,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 module.exports = {
-  solidity: "0.8.7",
+  /* solidity: "0.8.7", */
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
@@ -40,6 +41,11 @@ module.exports = {
       url: APP_KOVAN_ENDPOINT,
       accounts: [APP_PRIVATE_KEY],
     },
+    goerli: {
+      chainId: 5,
+      url: APP_GOERLI_ENDPOINT,
+      accounts: [APP_PRIVATE_KEY],
+    },
   },
   gasReporter: {
     enabled: REPORT_GAS || false,
@@ -51,6 +57,7 @@ module.exports = {
   },
   solidity: {
     version: "0.8.7",
+    compilers: [{ version: "0.8.7" }, { version: "^0.8.9" }],
     settings: {
       optimizer: {
         enabled: true,

@@ -2,7 +2,7 @@ import "./App.css";
 
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Box, ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider, Button } from "@mui/material";
 //Components
 
 import Home from "./Components/Home";
@@ -28,6 +28,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import theme from "./Components/theme/theme";
 
+/// BICONOMY
+import { Biconomy } from "@biconomy/mexa";
+
 // const {utils, BigNumber} = require('ethers');
 
 function App() {
@@ -52,6 +55,28 @@ function App() {
       }
     );
   } */
+
+  /// BICONOMY
+
+  let biconomy = "";
+  let bicoEthersProvider = "";
+
+  async function setUpBiconomy() {
+    biconomy = new Biconomy(window.ethereum, {
+      apiKey: process.env.REACT_APP_BICONOMY_API_KEY,
+      debug: true,
+    });
+    bicoEthersProvider = new ethers.providers.Web3Provider(biconomy);
+    await biconomy.init();
+  }
+  async function callGaslessWithdraw() {
+    const bicoContract = new ethers.Contract(
+      ContractAddress[5].NftMarketPlace,
+      NftMarketPlace.abi,
+      bicoEthersProvider
+    );
+    await bicoContract.withdrawContractsProfits();
+  }
 
   //handle State
   const [account, setAccount] = useState("");
@@ -604,6 +629,9 @@ function App() {
             element={<CrossChainTransfer />}
           />
         </Routes>
+        <Box>
+          <Button onClick={callGaslessWithdraw()}>call GaslessWithdraw</Button>
+        </Box>
         {/*      <Button onClick={(e) => web3Call()}>Web3</Button> */}
       </Box>
       {/*    </Box> */}

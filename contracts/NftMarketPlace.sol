@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /// @dev Biconomy gasless transactions
 import "./ERC2771Recipient.sol";
-import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+/* import "@openzeppelin/contracts/metatx/ERC2771Context.sol"; */
 
 
 // LIBRARIES ------------------------------------------------------------------------------------
@@ -35,18 +35,18 @@ error NftMarketPlace__CallerIsOwnerOfToken(address caller, uint tokenId);
 /// @title NFT Marketplace 
 /// @author Stefan Lehmann/Stefan1612/SimpleBlock
 /// @notice Contract used to allow trading, selling, creating Market Items (NFT)
-contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
+contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient {
 
 
     /// BICONOMY 
 
     string public override versionRecipient = "v0.0.1";
 
-    function _msgSender() internal override ( ERC2771Recipient) view returns (address) {
+    function _msgSender() internal override (ERC2771Recipient) view returns (address) {
         return ERC2771Recipient._msgSender();
     }
 
-    function _msgData() internal override ( ERC2771Recipient) view returns (bytes calldata) {
+    function _msgData() internal override (ERC2771Recipient) view returns (bytes calldata) {
         return ERC2771Recipient._msgData();
     }
 
@@ -135,19 +135,25 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
 
     // FUNCTIONS ------------------------------------------------------------------------------------
     /// @notice setting owner to contract deployer
+    // trusted forwarder addresses (retrieved from bico docs: https://docs.biconomy.io/misc/contract-addresses#eip-2771-contracts-trusted-forwarder)
+    // Rinkeby -> 0xFD4973FeB2031D4409fB57afEE5dF2051b171104
+    // Mainnet -> 0x84a0856b038eaAd1cC7E297cF34A7e72685A8693 -> https://github.com/bcnmy/mexa/blob/master/contracts/6/forwarder/BiconomyForwarder.sol
+    // Kovan -> 0xF82986F574803dfFd9609BE8b9c7B92f63a1410E
+    // Goerli -> 0xE041608922d06a4F26C0d4c27d8bCD01daf1f792
+    // Ropsten -> 0x3D1D6A62c588C1Ee23365AF623bdF306Eb47217A
     constructor(address forwarder) {
-        i_owner = payable(msg.sender);
+        i_owner = payable(_msgSender());
         _setTrustedForwarder(forwarder);
     }
 
 
     /// @notice A way for the contract owner to withdraw his profits
     function withdrawContractsProfits() external {
-        if(msg.sender != i_owner){
-            revert NftMarketPlace__NotOwnerOfContract(msg.sender);
+        if(_msgSender() != i_owner){
+            revert NftMarketPlace__NotOwnerOfContract(_msgSender());
         }
-        /* require(msg.sender == i_owner, "only the owner can call this function"); */
-        payable(msg.sender).transfer(s_profits);
+        /* require(_msgSender() == i_owner, "only the owner can call this function"); */
+        payable(_msgSender()).transfer(s_profits);
     }
 
     /// @notice mint NFT
@@ -173,14 +179,14 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
             currentTokenID,
             0,
             false,
-            payable(msg.sender),
+            payable(_msgSender()),
             payable(address(0)),
-            msg.sender
+            _msgSender()
         );
 
         /// @dev adding listing price to contract s_profits
         s_profits += msg.value;
-        emit marketItemCreated(_nftContractAddress, currentTokenID, 0, false, msg.sender,address(0),msg.sender);
+        emit marketItemCreated(_nftContractAddress, currentTokenID, 0, false, _msgSender(),address(0),_msgSender());
     }
     
     /// @notice sell NFT
@@ -192,18 +198,18 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         address _nftContractAddress
     ) external {
         if(sellPrice <= 0){
-            revert NftMarketPlace__ValueUnderOrEqualToZero(msg.sender, sellPrice);
+            revert NftMarketPlace__ValueUnderOrEqualToZero(_msgSender(), sellPrice);
         }
         if(!idToMarketToken[_tokenId].onSale == false){
             revert NftMarketPlace__TokenAlreadyOnSale(_tokenId);
         }
-        if(idToMarketToken[_tokenId].owner != msg.sender){
-            revert NftMarketPlace__NotOwnerOfToken(msg.sender, _tokenId);
+        if(idToMarketToken[_tokenId].owner != _msgSender()){
+            revert NftMarketPlace__NotOwnerOfToken(_msgSender(), _tokenId);
         }
       
         /// @dev transferring the NFT created in given contract address from current caller to this marketplace
         IERC721(_nftContractAddress).transferFrom(
-            msg.sender,
+            _msgSender(),
             address(this),
             _tokenId
         );
@@ -212,7 +218,7 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         
         idToMarketToken[_tokenId].price = sellPrice;
         idToMarketToken[_tokenId].onSale = true;
-        idToMarketToken[_tokenId].seller = payable(msg.sender);
+        idToMarketToken[_tokenId].seller = payable(_msgSender());
     }
 
     /// @notice buy NFT
@@ -231,16 +237,16 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         if(msg.value != idToMarketToken[_tokenId].price){
             revert NftMarketPlace__UnequalToSellPrice(msg.value);
         }
-        if(msg.sender == idToMarketToken[_tokenId].owner){
-            revert NftMarketPlace__CallerIsOwnerOfToken(msg.sender, _tokenId);
+        if(_msgSender() == idToMarketToken[_tokenId].owner){
+            revert NftMarketPlace__CallerIsOwnerOfToken(_msgSender(), _tokenId);
         }
      
 
        
-        /// @dev transferring NFT created in given address from this marketplace to the msg.sender (buyer)
+        /// @dev transferring NFT created in given address from this marketplace to the _msgSender() (buyer)
         IERC721(_nftContractAddress).transferFrom(
             address(this),
-            msg.sender,
+            _msgSender(),
             _tokenId
         );
 
@@ -250,7 +256,7 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         /// @dev update the state of bought market Token
         idToMarketToken[_tokenId].price = 0;
         idToMarketToken[_tokenId].onSale = false;
-        idToMarketToken[_tokenId].owner = payable(msg.sender);
+        idToMarketToken[_tokenId].owner = payable(_msgSender());
     }
 
     /// @notice getting all tokens which are currently up for sale
@@ -281,25 +287,25 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
     }
 
  
-    /// @notice getting all tokens which currently belong to msg.sender
-    /// @return array of Market Tokens which currently belong to msg.sender
+    /// @notice getting all tokens which currently belong to _msgSender()
+    /// @return array of Market Tokens which currently belong to _msgSender()
     function fetchAllMyTokens() external view returns (MarketToken[] memory) {
         /// @dev saving current ID to save some gas
         uint256 currentLastTokenId = s_tokenIds.current();
 
         uint256 yourTokenCount;
-        /// @dev loop to get the number of tokens currently belonging to msg.sender
+        /// @dev loop to get the number of tokens currently belonging to _msgSender()
         for (uint256 i = 1; i <= currentLastTokenId; i++) {
-            if (idToMarketToken[i].owner == msg.sender) {
+            if (idToMarketToken[i].owner == _msgSender()) {
                 yourTokenCount += 1;
             }
         }
-        /// @dev creating a memory array with the length of num "of tokens belonging to msg.sender"
+        /// @dev creating a memory array with the length of num "of tokens belonging to _msgSender()"
         MarketToken[] memory res = new MarketToken[](yourTokenCount);
         uint256 count = 0;
         /// @dev updating the memory array with all market tokens with onSale == true
         for (uint256 i = 1; i <= currentLastTokenId; i++) {
-            if (idToMarketToken[i].owner == msg.sender) {
+            if (idToMarketToken[i].owner == _msgSender()) {
                 res[count] = idToMarketToken[i];
                 count += 1;
             }
@@ -319,7 +325,7 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         uint256 yourMintedTokens;
         /// @dev loop to get the number of tokens minted by caller
         for (uint256 i = 1; i <= currentLastTokenId; i++) {
-            if (idToMarketToken[i].minter == msg.sender) {
+            if (idToMarketToken[i].minter == _msgSender()) {
                 yourMintedTokens += 1;
             }
         }
@@ -328,7 +334,7 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient{
         uint256 count = 0;
         /// @dev updating the memory array with all market tokens which are minted by the caller
         for (uint256 i = 1; i <= currentLastTokenId; i++) {
-            if (idToMarketToken[i].minter == msg.sender) {
+            if (idToMarketToken[i].minter == _msgSender()) {
                 res[count] = idToMarketToken[i];
                 count += 1;
             }

@@ -99,6 +99,9 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
     case 4:
       link = "https://rinkeby.etherscan.io";
       break;
+    case 5:
+      link = "https://goerli.etherscan.io/";
+      break;
     case 42:
       link = "https://kovan.etherscan.io";
       break;
@@ -154,6 +157,9 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
       break;
     case 42:
       link = "https://kovan.etherscan.io";
+      break;
+    case 5:
+      link = "https://goerli.etherscan.io/";
       break;
     case 137:
       link = "https://polygonscan.com";

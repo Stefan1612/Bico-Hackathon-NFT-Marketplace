@@ -6,7 +6,7 @@ The NFT Marketplace is currently running and fully functional on Kovan at
 
 2. NFT:
 
-The Website is online and running at [Website]()
+The Website is online and running at [Website](https://gilded-gecko-470388.netlify.app/)
 
 ## Approach
 
@@ -25,7 +25,10 @@ This DApp allows you mint, buy and sell NFT's from the "Ape Family" contract.
 
 ## Video Demo
 
+NFT Marketplace function
 https://www.youtube.com/watch?v=E7kEiSiET5o
+
+Hyphen Cross Chain demo
 
 ## Covalent API
 
