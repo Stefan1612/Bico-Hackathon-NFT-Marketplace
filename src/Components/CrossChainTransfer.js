@@ -8,7 +8,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import * as HyphenWidget from "@biconomy/hyphen-widget";
 import "@biconomy/hyphen-widget/dist/index.css";
 
-const CrossChainTransfer = () => {
+const CrossChainTransfer = (props) => {
   const [hyphenWidget, setHyphenWidget] = useState();
 
   useEffect(() => {
@@ -53,6 +53,18 @@ const CrossChainTransfer = () => {
           Cross Chain Transfer
         </Typography>
       </Box>
+      <Button
+        sx={{ backgroundColor: "red" }}
+        onClick={() => props.setUpBiconomy()}
+      >
+        setUpBiconomy
+      </Button>
+      <Button
+        sx={{ backgroundColor: "red" }}
+        onClick={() => props.callGaslessWithdraw()}
+      >
+        call GaslessWithdraw
+      </Button>
       <Container>
         <Box paddingTop={"5vh"} marginBottom={"5vh"}>
           <Box id="pages" paddingBottom={"10vh"}>
@@ -60,7 +72,7 @@ const CrossChainTransfer = () => {
               <i className="fas fa-cat"></i>
             </form>
             <Typography
-              Component={"h2"}
+              component={"h2"}
               variant={"h1"}
               align="center"
               color={"secondary"}

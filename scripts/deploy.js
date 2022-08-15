@@ -7,7 +7,7 @@ const {
 
 const { ethers, network } = hre;
 let NftAddress = "";
-const forwarderAddress = "0xF82986F574803dfFd9609BE8b9c7B92f63a1410E"; // Kovan
+const forwarderAddress = "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792"; // Goerli
 async function deploy(contractName, args = []) {
   const { chainId } = network.config;
 
@@ -26,7 +26,8 @@ async function deploy(contractName, args = []) {
 
 async function main() {
   await deploy("NftMarketPlace", [forwarderAddress]);
-  await deploy("NFT", [NftAddress]);
+  await deploy("NFT", [NftAddress, forwarderAddress]);
+  await deploy("GaslessToken", [forwarderAddress]);
   console.log(NftAddress);
 }
 

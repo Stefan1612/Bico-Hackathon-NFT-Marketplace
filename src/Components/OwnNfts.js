@@ -108,53 +108,6 @@ const OwnNfts = (props) => {
                   </Grid>
                 </Box>
               </Container>
-              {/*  {props.ownNFTs.map((index) => {
-          return (
-            <div
-              key={index.tokenId}
-              className="card col-md-2 tokenCard"
-              style={{ marginLeft: "5px", height: "50vh" }}
-            >
-              <img
-                alt="NFT"
-                src={index.image}
-                className=" card-img-top imageId"
-              ></img>
-
-              <div className="card-body">
-                <div className="card-title" id="nftName">
-                  {index.name}
-                </div>
-                <div className="card-text" id="nftDescription">
-                  {index.description}
-                </div>
-                <div id="nftPrice">{index.price} Ether</div>
-
-                <input
-                  style={{ width: "100%" }}
-                  onChange={(e) => props.handleChangePrice(e)}
-                  placeholder="Put in Sale price"
-                ></input>
-                <button
-                  className="btn-success"
-                  style={{ width: "45%" }}
-                  id="nftBuy"
-                  onClick={() => props.sellNFT(index)}
-                >
-                  Sell NFT
-                </button>
-                <button
-                  className="btn-danger"
-                  style={{ width: "55%" }}
-                  id="nftBuy"
-                  onClick={() => props.deletingNFT(index)}
-                >
-                  Delete NFT
-                </button>
-              </div>
-            </div>
-          );
-        })} */}
             </div>
           </Box>
         </Box>
