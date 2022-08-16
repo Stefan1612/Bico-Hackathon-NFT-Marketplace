@@ -72,7 +72,7 @@ This project is released under a GPLv3 compatible license
 ## Biconomy
 
 ### Gasless Transactions
-This NFT allows gasless NFT minting, buying and selling thanks to biconomy
+This NFT allows party gasless NFT minting, buying and selling thanks to biconomy (only the marketplace itself and not NFT contract is currently gasless, because of the nature of my contract setup only the second transaction you need to accept for minting, etc... will be gasless (you still have to pay 0.002 eth fee to the contract for the owner))
 
 Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/choose-an-approach-to-enable-gasless/eip-2771
 
