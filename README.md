@@ -2,9 +2,9 @@
 
 The NFT Marketplace is currently running and fully functional on Kovan at
 
-1. NFT Market:
+1. NFT Market: 0xd86306eC52e8cC40d76071c4a0E21bF616a572a8
 
-2. NFT:
+2. NFT: 0x931331D6F114DC037A33D807a441C99d48ddEbd4
 
 The Website is online and running at [Website](https://gilded-gecko-470388.netlify.app/)
 
@@ -65,6 +65,12 @@ This project is released under a GPLv3 compatible license
 ### Gasless Transactions
 This NFT allows gasless NFT minting, buying and selling thanks to biconomy
 
-Contract additions: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/contracts/ERC2771Recipient.sol)
+Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/choose-an-approach-to-enable-gasless/eip-2771
 
+### Hyphen Widget
+
+The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your 
+Tokens from one network to another 
+
+Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
 
