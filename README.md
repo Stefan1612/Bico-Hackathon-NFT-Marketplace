@@ -22,7 +22,6 @@ A NFT Marketplace running currently on Goerli. Let's you mint, sell and buy NFT'
 5. If you wanna test with your own contract instances you can redeploy on goerli via: 
 npx hardhat run scripts/deploy.js --network goerli
 
-## Presentation:
 
 ## What is a NFT Marketplace?
 
