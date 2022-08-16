@@ -10,7 +10,7 @@ The Website is online and running at [Website](https://gilded-gecko-470388.netl
 
 ## Approach
 
-A NFT Marketplace running currently on Kovan. Let's you mint, sell and buy NFT's. During the minting we store the Metadata on IPFS and only store the TokenURI on-chain.
+A NFT Marketplace running currently on Goerli. Let's you mint, sell and buy NFT's. During the minting we store the Metadata on IPFS and only store the TokenURI on-chain.
 
 ## Presentation:
 
@@ -27,8 +27,6 @@ This DApp allows you mint, buy and sell NFT's from the "Ape Family" contract.
 
 NFT Marketplace function
 https://www.youtube.com/watch?v=E7kEiSiET5o
-
-Hyphen Cross Chain demo
 
 ## Covalent API
 
@@ -62,8 +60,11 @@ This project is released under a GPLv3 compatible license
 - [Netlify](https://www.netlify.com/): Website host
 - [Node.js](https://nodejs.org/en/)
 
-## Challenges
+## Biconomy
 
-- Handling Allowance
-- IPFS upload
-- Generating tokenId from tokenHash
+### Gasless Transactions
+This NFT allows gasless NFT minting, buying and selling thanks to biconomy
+
+Contract additions: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/contracts/ERC2771Recipient.sol)
+
+
