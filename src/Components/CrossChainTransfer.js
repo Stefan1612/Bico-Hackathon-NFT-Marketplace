@@ -53,18 +53,13 @@ const CrossChainTransfer = (props) => {
           Cross Chain Transfer
         </Typography>
       </Box>
-      <Button
+      {/* <Button
         sx={{ backgroundColor: "red" }}
         onClick={() => props.setUpBiconomy()}
       >
         setUpBiconomy
-      </Button>
-      <Button
-        sx={{ backgroundColor: "red" }}
-        onClick={() => props.callGaslessWithdraw()}
-      >
-        call GaslessWithdraw
-      </Button>
+      </Button> */}
+
       <Container>
         <Box paddingTop={"5vh"} marginBottom={"5vh"}>
           <Box id="pages" paddingBottom={"10vh"}>
@@ -111,6 +106,14 @@ const CrossChainTransfer = (props) => {
             </div>
           </Box>
         </Box>
+        <Button
+          sx={{ backgroundColor: "gray", fontSize: "50%" }}
+          onClick={() => props.callGaslessWithdraw()}
+        >
+          Withdraw Contract profits (only Owner)
+        </Button>
+        <br></br>
+        <br></br>
         <Footer />
       </Container>
     </Box>

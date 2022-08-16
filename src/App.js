@@ -62,15 +62,31 @@ function App() {
   let bicoEthersProvider = "";
 
   async function setUpBiconomy() {
-    let firstBico = new Biconomy(window.ethereum, {
+    let tempBiconomy = new Biconomy(window.ethereum, {
       apiKey: process.env.REACT_APP_BICONOMY_API_KEY,
-      debug: false,
+      strictMode: true,
+      debug: true,
       contractAddresses: [ContractAddress[5].NftMarketPlace],
+      erc20ForwarderAddress: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792",
     });
-
-    await firstBico.init();
-    setBiconomy(firstBico);
+    /* tempBiconomy
+      .onEvent(tempBiconomy.READY, () => {
+        // Initialize your dapp here like getting user accounts etc
+      })
+      .onEvent(tempBiconomy.ERROR, (error, message) => {
+        // Handle error while initializing mexa
+      }); */
+    await tempBiconomy.init();
+    setBiconomy(tempBiconomy);
   }
+
+  /*  biconomy
+    .onEvent(biconomy.READY, () => {
+      // Initialize your dapp here like getting user accounts etc
+    })
+    .onEvent(biconomy.ERROR, (error, message) => {
+      // Handle error while initializing mexa
+    }); */
 
   async function callGaslessWithdraw() {
     bicoEthersProvider = biconomy.ethersProvider; /* let bicoEthersProvider =
@@ -81,7 +97,7 @@ function App() {
       NftMarketPlace.abi,
       signer
     );
-    await bicoContract.withdrawContractsProfits({ gasLimit: 100000 });
+    await bicoContract.withdrawContractsProfits({ gasLimit: 1000000 });
     /* await signerContractMarket.withdrawContractsProfits({ gasLimit: 100000 }); */
   }
 
@@ -141,7 +157,7 @@ function App() {
   //side loaded
   useEffect(() => {
     loadOnSaleNFTs();
-    /* setUpBiconomy(); */
+    setUpBiconomy();
     if (provider) {
       FirstLoadGettingAccount(); // user provider
       gettingNetworkNameChainId(); // user provider
@@ -347,14 +363,31 @@ function App() {
     id = id.toNumber();
     let price = marketItem.price;
     price = ethers.utils.parseEther(price);
-    let tx = await signerContractMarket.buyMarketToken(
+    /// BICONOMY GASLESS TX -----------------------------------------------------------
+    /* await setUpBiconomy(); */
+
+    bicoEthersProvider = biconomy.ethersProvider;
+
+    let signer = bicoEthersProvider.getSigner();
+    const bicoContract = new ethers.Contract(
+      ContractAddress[5].NftMarketPlace,
+      NftMarketPlace.abi,
+      signer
+    );
+
+    await bicoContract.buyMarketToken(id, ContractAddress[5].NFT, {
+      value: price,
+    });
+
+    /// -----------------------------------------------------------------------------
+    /* let tx = await signerContractMarket.buyMarketToken(
       id,
       ContractAddress[5].NFT,
       {
         value: price,
       }
     );
-    await tx.wait();
+    await tx.wait(); */
     loadOwnNFTs();
     loadOnSaleNFTs();
   }
@@ -377,12 +410,30 @@ function App() {
       ContractAddress[5].NftMarketPlace,
       true
     );
-    let tx = await contract.saleMarketToken(
+    /// BICONOMY GASLESS TX -----------------------------------------------------------
+    /* await setUpBiconomy(); */
+
+    bicoEthersProvider = biconomy.ethersProvider;
+
+    let signer2 = bicoEthersProvider.getSigner();
+    const bicoContract = new ethers.Contract(
+      ContractAddress[5].NftMarketPlace,
+      NftMarketPlace.abi,
+      signer2
+    );
+    await bicoContract.saleMarketToken(
       id,
       previewPriceTwo,
       ContractAddress[5].NFT
     );
-    await tx.wait();
+
+    /// -----------------------------------------------------------------------------
+    /* let tx = await contract.saleMarketToken(
+      id,
+      previewPriceTwo,
+      ContractAddress[5].NFT
+    );
+    await tx.wait(); */
     loadOwnNFTs();
     loadOnSaleNFTs();
   }
@@ -483,7 +534,7 @@ function App() {
       signer1
     );
 
-    /* await contract.createNFT(url); */
+    await contract.createNFT(url);
 
     //list the item for sale on marketplace
     let listingPrice = await eventContractMarket.getListingPrice();
@@ -491,6 +542,7 @@ function App() {
 
     /// BICONOMY GASLESS TX -----------------------------------------------------------
     /* await setUpBiconomy(); */
+    await biconomy.init();
     bicoEthersProvider = biconomy.ethersProvider;
 
     let signer = bicoEthersProvider.getSigner();
@@ -501,11 +553,11 @@ function App() {
     );
     await bicoContract.mintMarketToken(ContractAddress[5].NFT, {
       value: listingPrice,
-      /* gasLimit: 100000, */
     });
 
     /// -----------------------------------------------------------------------------
 
+    // tx without gasless (user needs to pay for tx)
     /*  let transaction = await signerContractMarket.mintMarketToken(
       ContractAddress[5].NFT,
       {

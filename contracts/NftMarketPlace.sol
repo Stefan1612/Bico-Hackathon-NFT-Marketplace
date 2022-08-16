@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.9;
 
 // IMPORTS ------------------------------------------------------------------------------------
 /// @notice debugging tool
@@ -9,10 +9,10 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 /// @notice security
 /// @dev security against transactions with multiple requests
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
+import "@openzeppelin/contracts/access/Ownable.sol";
 /// @dev Biconomy gasless transactions
 import "./ERC2771Recipient.sol";
-/* import "@openzeppelin/contracts/metatx/ERC2771Context.sol"; */
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 
 // LIBRARIES ------------------------------------------------------------------------------------
@@ -35,18 +35,18 @@ error NftMarketPlace__CallerIsOwnerOfToken(address caller, uint tokenId);
 /// @title NFT Marketplace 
 /// @author Stefan Lehmann/Stefan1612/SimpleBlock
 /// @notice Contract used to allow trading, selling, creating Market Items (NFT)
-contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient {
+contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient, Ownable {
 
 
     /// BICONOMY 
 
     string public override versionRecipient = "v0.0.1";
 
-    function _msgSender() internal override (ERC2771Recipient) view returns (address) {
+    function _msgSender() internal override (Context, ERC2771Recipient) view returns (address) {
         return ERC2771Recipient._msgSender();
     }
 
-    function _msgData() internal override (ERC2771Recipient) view returns (bytes calldata) {
+    function _msgData() internal override (Context, ERC2771Recipient) view returns (bytes calldata) {
         return ERC2771Recipient._msgData();
     }
 
@@ -192,6 +192,7 @@ contract NftMarketPlace is ReentrancyGuard, ERC2771Recipient {
     /// @notice sell NFT
     /// @dev putting market Token for sale on marketplace
     /// @param _tokenId tokenID of NFT putting up for sale, sellPrice the price you want the NFT to be sold for, _nftContractAddress contract address of the NFT you want to sell 
+    // /**sell**/
     function saleMarketToken(
         uint256 _tokenId,
         uint256 sellPrice,

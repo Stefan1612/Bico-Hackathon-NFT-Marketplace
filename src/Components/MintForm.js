@@ -26,12 +26,12 @@ const MintForm = (props) => {
           className="col-md-3 "
         >
           {" "}
-          <Button
+          {/* <Button
             sx={{ backgroundColor: "red" }}
             onClick={() => props.setUpBiconomy()}
           >
             setUpBiconomy
-          </Button>
+          </Button> */}
           <Typography
             component={"h1"}
             variant={"h1"}

@@ -21,7 +21,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 module.exports = {
-  /* solidity: "0.8.7", */
+  /*  solidity: "0.8.9", */
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
@@ -56,8 +56,9 @@ module.exports = {
     apiKey: ETHER_SCAN_API_KEY,
   },
   solidity: {
-    version: "0.8.7",
-    compilers: [{ version: "0.8.7" }, { version: "^0.8.9" }],
+    version: "0.8.9",
+
+    compilers: [{ version: "0.8.7" }, { version: "0.8.9", settings: {} }],
     settings: {
       optimizer: {
         enabled: true,
