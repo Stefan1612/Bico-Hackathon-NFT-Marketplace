@@ -394,11 +394,11 @@ function App() {
 
   async function sellNFT(marketItem) {
     const signer = provider.getSigner();
-    let contract = new ethers.Contract(
+    /* let contract = new ethers.Contract(
       ContractAddress[5].NftMarketPlace,
       NftMarketPlace.abi,
       signer
-    );
+    ); */
     const nftContract = new ethers.Contract(
       ContractAddress[5].NFT,
       NFT.abi,
@@ -542,7 +542,7 @@ function App() {
 
     /// BICONOMY GASLESS TX -----------------------------------------------------------
     /* await setUpBiconomy(); */
-    await biconomy.init();
+    /*  await biconomy.init(); */
     bicoEthersProvider = biconomy.ethersProvider;
 
     let signer = bicoEthersProvider.getSigner();
