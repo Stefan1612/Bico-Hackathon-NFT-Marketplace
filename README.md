@@ -76,6 +76,10 @@ This NFT allows gasless NFT minting, buying and selling thanks to biconomy
 
 Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/choose-an-approach-to-enable-gasless/eip-2771
 
+Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/App.js)
+
+And all contracts modified accordingly: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/tree/master/contracts)
+
 ### Hyphen Widget
 
 The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your 
@@ -83,3 +87,4 @@ Tokens from one network to another
 
 Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
 
+Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/Components/CrossChainTransfer.js)
