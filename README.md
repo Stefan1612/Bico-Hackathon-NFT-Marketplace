@@ -1,6 +1,6 @@
 ## Status
 
-The NFT Marketplace is currently running and fully functional on Kovan at
+The NFT Marketplace is currently running and fully functional on Goerli at
 
 1. NFT Market: 0xd86306eC52e8cC40d76071c4a0E21bF616a572a8
 
@@ -11,6 +11,16 @@ The Website is online and running at [Website](https://gilded-gecko-470388.netl
 ## Approach
 
 A NFT Marketplace running currently on Goerli. Let's you mint, sell and buy NFT's. During the minting we store the Metadata on IPFS and only store the TokenURI on-chain.
+
+
+## Project local setup
+
+1. git clone repo
+2. generate .env
+3. npm i
+4. npm start
+5. If you wanna test with your own contract instances you can redeploy on goerli via: 
+npx hardhat run scripts/deploy.js --network goerli
 
 ## Presentation:
 
