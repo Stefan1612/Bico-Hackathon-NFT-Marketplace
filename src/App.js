@@ -39,7 +39,7 @@ function App() {
   /// BICONOMY
 
   const [biconomy, setBiconomy] = useState("");
-  let bicoEthersProvider = "";
+  /*  let bicoEthersProvider = ""; */
 
   async function setUpBiconomy() {
     let tempBiconomy = new Biconomy(window.ethereum, {
@@ -459,12 +459,12 @@ function App() {
   //creating the NFT(first mint at ContractAddress[5].NftMarketPlace, second create market Token at market address)
   async function mintNFT(url) {
     //first step
-    const signer1 = provider.getSigner();
+    /* const signer1 = provider.getSigner();
     let contract = new ethers.Contract(
       ContractAddress[5].NFT,
       NFT.abi,
       signer1
-    );
+    ); */
 
     /* await contract.createNFT(url); */
 
@@ -474,7 +474,7 @@ function App() {
 
     /// BICONOMY GASLESS TX -----------------------------------------------------------
 
-    bicoEthersProvider = biconomy.ethersProvider;
+    /* let bicoEthersProvider = biconomy.ethersProvider; */
     //provider
     let BicoProvider = biconomy.provider;
 
