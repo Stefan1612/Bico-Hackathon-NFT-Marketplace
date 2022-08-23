@@ -21,7 +21,16 @@ NFT Marketplace: https://www.youtube.com/watch?v=E7kEiSiET5o
 
 SKD Hyphen: https://www.youtube.com/watch?v=cViRhJu1qIM
 
-### Gasless Transactions (23.08.22 - there seems to be an error with the biconomy dashboard)
+### Hyphen Widget
+
+The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your
+Tokens from one network to another
+
+Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
+
+Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/Components/CrossChainTransfer.js)
+
+### Gasless Transactions 
 
 This NFT allows party gasless NFT minting,selling and buying (mintNFT(), sellNFT(), buyNFT()) thanks to biconomy (only the marketplace itself and not NFT contract is currently gasless, because of the nature of my contract setup only the second transaction you need to accept for minting, etc... will be gasless (you still have to pay 0.002 eth fee to the contract to the owner when minting))
 
@@ -30,15 +39,6 @@ Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/cho
 Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/App.js)
 
 And all contracts modified accordingly: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/tree/master/contracts)
-
-### Hyphen Widget (23.08.22 works perfectly)
-
-The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your
-Tokens from one network to another
-
-Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
-
-Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/Components/CrossChainTransfer.js)
 
 ## Approach
 
