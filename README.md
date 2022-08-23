@@ -17,7 +17,7 @@ Discord: SimpleBlock#6604
 
 ### Demo videos: 
 
-NFT Marketplace: https://www.youtube.com/watch?v=E7kEiSiET5o
+NFT Marketplace: hhttps://www.youtube.com/watch?v=zYdKS_B3RJo
 
 SKD Hyphen: https://www.youtube.com/watch?v=cViRhJu1qIM
 
