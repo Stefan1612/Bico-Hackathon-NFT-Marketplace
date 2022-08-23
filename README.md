@@ -2,11 +2,16 @@
 
 The NFT Marketplace is currently running and fully functional on Goerli at
 
-1. NFT Market: 0xd86306eC52e8cC40d76071c4a0E21bF616a572a8
+1. NFT Market:
 
-2. NFT: 0x931331D6F114DC037A33D807a441C99d48ddEbd4
+2. NFT:
 
 The Website is online and running at [Website](https://gilded-gecko-470388.netlify.app/)
+
+## Any questions? Contact me
+
+Email: simpleblock4@protonmail.com
+Discord: SimpleBlock#6604
 
 ## Biconomy
 
