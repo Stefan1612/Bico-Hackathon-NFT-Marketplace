@@ -15,6 +15,12 @@ Discord: SimpleBlock#6604
 
 ## Biconomy
 
+### Demo videos: 
+
+NFT Marketplace: https://www.youtube.com/watch?v=E7kEiSiET5o
+
+SKD Hyphen: https://www.youtube.com/watch?v=cViRhJu1qIM
+
 ### Gasless Transactions (23.08.22 - there seems to be an error with the biconomy dashboard)
 
 This NFT allows party gasless NFT minting,selling and buying (mintNFT(), sellNFT(), buyNFT()) thanks to biconomy (only the marketplace itself and not NFT contract is currently gasless, because of the nature of my contract setup only the second transaction you need to accept for minting, etc... will be gasless (you still have to pay 0.002 eth fee to the contract to the owner when minting))
@@ -56,10 +62,6 @@ This DApp allows you mint, buy and sell NFT's from the "Ape Family" contract.
 - sell, buy with NFT Marketplace contract
 - mint, transfer and set TokenURI with NFT contract
 
-## Video Demo
-
-NFT Marketplace function
-https://www.youtube.com/watch?v=E7kEiSiET5o
 
 ## Covalent API
 
