@@ -8,10 +8,30 @@ The NFT Marketplace is currently running and fully functional on Goerli at
 
 The Website is online and running at [Website](https://gilded-gecko-470388.netlify.app/)
 
+## Biconomy
+
+### Gasless Transactions (23.08.22 - there seems to be an error with the biconomy dashboard)
+
+This NFT allows party gasless NFT minting,selling and buying (mintNFT(), sellNFT(), buyNFT()) thanks to biconomy (only the marketplace itself and not NFT contract is currently gasless, because of the nature of my contract setup only the second transaction you need to accept for minting, etc... will be gasless (you still have to pay 0.002 eth fee to the contract to the owner when minting))
+
+Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/choose-an-approach-to-enable-gasless/eip-2771
+
+Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/App.js)
+
+And all contracts modified accordingly: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/tree/master/contracts)
+
+### Hyphen Widget (23.08.22 works perfectly)
+
+The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your
+Tokens from one network to another
+
+Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
+
+Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/Components/CrossChainTransfer.js)
+
 ## Approach
 
 A NFT Marketplace running currently on Goerli. Let's you mint, sell and buy NFT's. During the minting we store the Metadata on IPFS and only store the TokenURI on-chain.
-
 
 ## Project local setup
 
@@ -19,9 +39,8 @@ A NFT Marketplace running currently on Goerli. Let's you mint, sell and buy NFT'
 2. generate .env
 3. npm i
 4. npm start
-5. If you wanna test with your own contract instances you can redeploy on goerli via: 
-npx hardhat run scripts/deploy.js --network goerli
-
+5. If you wanna test with your own contract instances you can redeploy on goerli via:
+   npx hardhat run scripts/deploy.js --network goerli
 
 ## What is a NFT Marketplace?
 
@@ -68,23 +87,3 @@ This project is released under a GPLv3 compatible license
 
 - [Netlify](https://www.netlify.com/): Website host
 - [Node.js](https://nodejs.org/en/)
-
-## Biconomy
-
-### Gasless Transactions
-This NFT allows party gasless NFT minting, buying and selling thanks to biconomy (only the marketplace itself and not NFT contract is currently gasless, because of the nature of my contract setup only the second transaction you need to accept for minting, etc... will be gasless (you still have to pay 0.002 eth fee to the contract for the owner))
-
-Biconomy docs: https://docs.biconomy.io/products/enable-gasless-transactions/choose-an-approach-to-enable-gasless/eip-2771
-
-Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/App.js)
-
-And all contracts modified accordingly: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/tree/master/contracts)
-
-### Hyphen Widget
-
-The Biconomy Hyphen Widget allows for fast and easy cross chain movement of funds. You can easily with a few clicks and seconds transfer your 
-Tokens from one network to another 
-
-Biconomy docs: https://docs.biconomy.io/products/hyphen-instant-cross-chain-transfers/hyphen-widget
-
-Added at: [Code](https://github.com/Stefan1612/Bico-Hackathon-NFT-Marketplace/blob/master/src/Components/CrossChainTransfer.js)

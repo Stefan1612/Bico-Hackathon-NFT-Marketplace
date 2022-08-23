@@ -46,7 +46,7 @@ function App() {
       apiKey: process.env.REACT_APP_BICONOMY_API_KEY,
 
       /* strictMode: true, */
-      debug: true,
+      debug: false,
       contractAddresses: [ContractAddress[5].NftMarketPlace],
       /* erc20ForwarderAddress: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792", */
     });
@@ -295,42 +295,58 @@ function App() {
     id = id.toNumber();
     let price = marketItem.price;
     price = ethers.utils.parseEther(price);
-    /// BICONOMY GASLESS TX (Not debugged yet)-----------------------------------------------------------
-    /* await setUpBiconomy(); */
+    /// BICONOMY GASLESS TX -----------------------------------------------------------
+    let bicoEthersProvider = biconomy.ethersProvider;
 
-    /*  bicoEthersProvider = biconomy.ethersProvider;
+    let BicoProvider = biconomy.provider;
 
-    let signer = bicoEthersProvider.getSigner();
     const bicoContract = new ethers.Contract(
       ContractAddress[5].NftMarketPlace,
       NftMarketPlace.abi,
-      signer
+      /* biconomy.ethersProvider */
+      bicoEthersProvider.getSigner()
     );
 
-    await bicoContract.buyMarketToken(id, ContractAddress[5].NFT, {
-      value: price,
-    }); */
-
-    /// -----------------------------------------------------------------------------
-    let tx = await signerContractMarket.buyMarketToken(
+    let { data } = await bicoContract.populateTransaction.buyMarketToken(
       id,
       ContractAddress[5].NFT,
       {
         value: price,
       }
     );
-    await tx.wait();
+
+    let txParams = {
+      data: data,
+      to: bicoContract.address,
+      from: account,
+      gasLimit: 100000000, // optional
+      signatureType: "EIP712_SIGN",
+
+      value: price,
+    };
+
+    await BicoProvider.send("eth_sendTransaction", [txParams]);
+
+    /// -----------------------------------------------------------------------------
+    /*  let tx = await signerContractMarket.buyMarketToken(
+      id,
+      ContractAddress[5].NFT,
+      {
+        value: price,
+      }
+    );
+    await tx.wait(); */
     loadOwnNFTs();
     loadOnSaleNFTs();
   }
 
   async function sellNFT(marketItem) {
     const signer = provider.getSigner();
-    let contract = new ethers.Contract(
+    /* let contract = new ethers.Contract(
       ContractAddress[5].NftMarketPlace,
       NftMarketPlace.abi,
       signer
-    );
+    ); */
     const nftContract = new ethers.Contract(
       ContractAddress[5].NFT,
       NFT.abi,
@@ -342,30 +358,41 @@ function App() {
       ContractAddress[5].NftMarketPlace,
       true
     );
-    /// BICONOMY GASLESS TX (Not debugged yet)-----------------------------------------------------------
-    /* await setUpBiconomy(); */
+    /// BICONOMY GASLESS TX -----------------------------------------------------------
+    let bicoEthersProvider = biconomy.ethersProvider;
 
-    /* bicoEthersProvider = biconomy.ethersProvider;
+    let BicoProvider = biconomy.provider;
 
-    let signer2 = bicoEthersProvider.getSigner();
     const bicoContract = new ethers.Contract(
       ContractAddress[5].NftMarketPlace,
       NftMarketPlace.abi,
-      signer2
+      /* biconomy.ethersProvider */
+      bicoEthersProvider.getSigner()
     );
-    await bicoContract.saleMarketToken(
+
+    let { data } = await bicoContract.populateTransaction.saleMarketToken(
       id,
       previewPriceTwo,
       ContractAddress[5].NFT
-    ); */
+    );
+
+    let txParams = {
+      data: data,
+      to: bicoContract.address,
+      from: account,
+      gasLimit: 100000000, // optional
+      signatureType: "EIP712_SIGN",
+    };
+
+    await BicoProvider.send("eth_sendTransaction", [txParams]);
 
     /// -----------------------------------------------------------------------------
-    let tx = await contract.saleMarketToken(
+    /*  let tx = await contract.saleMarketToken(
       id,
       previewPriceTwo,
       ContractAddress[5].NFT
     );
-    await tx.wait();
+    await tx.wait(); */
     loadOwnNFTs();
     loadOnSaleNFTs();
   }
@@ -459,20 +486,20 @@ function App() {
   //creating the NFT(first mint at ContractAddress[5].NftMarketPlace, second create market Token at market address)
   async function mintNFT(url) {
     //first step
-    /* const signer1 = provider.getSigner();
+    const signer1 = provider.getSigner();
     let contract = new ethers.Contract(
       ContractAddress[5].NFT,
       NFT.abi,
       signer1
-    ); */
+    );
 
-    /* await contract.createNFT(url); */
+    await contract.createNFT(url);
 
     //list the item for sale on marketplace
     let listingPrice = await eventContractMarket.getListingPrice();
     listingPrice = listingPrice.toString();
 
-    /// BICONOMY GASLESS TX -----------------------------------------------------------
+    /// BICONOMY GASLESS TX (Fully Working)-----------------------------------------------------------
 
     let bicoEthersProvider = biconomy.ethersProvider;
     //provider
@@ -497,9 +524,6 @@ function App() {
       }
     );
 
-    console.log(ethers.utils.parseEther("0.002")._hex);
-    console.log({ data });
-    console.log(data);
     let txParams = {
       data: data,
       to: bicoContract.address,
@@ -536,12 +560,6 @@ function App() {
 
     /// -----------------------------------------------------------------------------
 
-    /* signerContractMarket == contract
- biconomyContract = bicoContract
- _provider = provider
- address = account
-
-*/
     // tx without gasless (user needs to pay for tx)
     /*  let transaction = await signerContractMarket.mintMarketToken(
       ContractAddress[5].NFT,
