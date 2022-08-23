@@ -474,8 +474,9 @@ function App() {
 
     /// BICONOMY GASLESS TX -----------------------------------------------------------
 
-    /* let bicoEthersProvider = biconomy.ethersProvider; */
+    let bicoEthersProvider = biconomy.ethersProvider;
     //provider
+
     let BicoProvider = biconomy.provider;
 
     /* let signer = bicoEthersProvider.getSigner(); */
@@ -485,29 +486,52 @@ function App() {
     const bicoContract = new ethers.Contract(
       ContractAddress[5].NftMarketPlace,
       NftMarketPlace.abi,
-      biconomy.ethersProvider
+      /* biconomy.ethersProvider */
+      bicoEthersProvider.getSigner()
     );
 
-    let { data } =
-      await signerContractMarket.populateTransaction.mintMarketToken(
-        ContractAddress[5].NFT,
-        {
-          value: listingPrice,
-        }
-      );
+    let { data } = await bicoContract.populateTransaction.mintMarketToken(
+      ContractAddress[5].NFT,
+      {
+        value: listingPrice,
+      }
+    );
 
+    console.log(ethers.utils.parseEther("0.002")._hex);
+    console.log({ data });
+    console.log(data);
     let txParams = {
       data: data,
       to: bicoContract.address,
       from: account,
       gasLimit: 100000000, // optional
       signatureType: "EIP712_SIGN",
+      // value: listingPrice,
+      value: ethers.utils.parseEther("0.002")._hex,
     };
+
+    /*  let data = await bicoContract.populateTransaction.mintMarketToken(
+      ContractAddress[5].NFT ,
+      {
+        value: listingPrice,
+      }
+    );
+    console.log({ data });
+    console.log(data);
+    let txParams = {
+      data: data.data,
+      to: data.to,
+      from: data.from,
+      gasLimit: 100000000, // optional
+      signatureType: "EIP712_SIGN",
+      value: listingPrice,
+    }; */
 
     await BicoProvider.send("eth_sendTransaction", [txParams]);
 
     /* await bicoContract.mintMarketToken(ContractAddress[5].NFT, {
       value: listingPrice,
+      data: data,
     }); */
 
     /// -----------------------------------------------------------------------------
