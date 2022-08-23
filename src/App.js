@@ -322,7 +322,7 @@ function App() {
       gasLimit: 100000000, // optional
       signatureType: "EIP712_SIGN",
 
-      value: price,
+      value: price._hex,
     };
 
     await BicoProvider.send("eth_sendTransaction", [txParams]);
